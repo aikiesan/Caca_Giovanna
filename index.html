@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Caça-palavras especial para Giovanna">
+    <title>Mensagem Especial para Giovanna 💜</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Partículas de fundo animadas */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 15s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.3);
+            max-width: 800px;
+            width: 100%;
+            position: relative;
+            z-index: 10;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-size: clamp(1.8em, 5vw, 2.5em);
+            margin-bottom: 10px;
+            font-weight: 700;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                filter: drop-shadow(0 0 5px rgba(102, 126, 234, 0.5));
+            }
+            to {
+                filter: drop-shadow(0 0 20px rgba(118, 75, 162, 0.8));
+            }
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: clamp(0.9em, 2.5vw, 1.1em);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .instructions {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            text-align: center;
+            color: #555;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            font-size: clamp(0.85em, 2vw, 0.95em);
+        }
+
+        .instructions strong {
+            color: #667eea;
+        }
+
+        .grid-container {
+            overflow-x: auto;
+            margin: 25px 0;
+            padding: 10px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(118, 75, 162, 0.05));
+            border-radius: 15px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            gap: 3px;
+            margin: 0 auto;
+            max-width: 650px;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .cell {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: clamp(11px, 2.5vw, 15px);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            color: #333;
+        }
+
+        .cell:hover {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2));
+            transform: scale(1.08);
+            border-color: #667eea;
+            z-index: 5;
+        }
+
+        .cell.selected {
+            background: linear-gradient(135deg, #ffd700, #ffed4e);
+            border-color: #ffaa00;
+            color: #333;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+            z-index: 4;
+        }
+
+        .cell.found {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+            animation: foundPulse 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+        }
+
+        @keyframes foundPulse {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2) rotate(5deg);
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 25px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-radius: 15px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .stat-label {
+            font-size: 0.85em;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+            box-shadow: 0 4px 15px rgba(108, 117, 125, 0.4);
+        }
+
+        button.secondary:hover {
+            box-shadow: 0 6px 20px rgba(108, 117, 125, 0.6);
+        }
+
+        .hint {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(135deg, rgba(255, 193, 7, 0.1), rgba(255, 152, 0, 0.1));
+            border-radius: 15px;
+            color: #856404;
+            font-size: 0.95em;
+            border: 2px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .message {
+            text-align: center;
+            margin-top: 30px;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            display: none;
+            animation: messageIn 1s cubic-bezier(0.4, 0, 0.2, 1);
+            color: white;
+            box-shadow: 0 20px 60px rgba(102, 126, 234, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .message::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message h2 {
+            font-size: clamp(1.5em, 4vw, 2.2em);
+            margin-bottom: 15px;
+            font-weight: 700;
+            position: relative;
+            z-index: 2;
+        }
+
+        .message p {
+            font-size: clamp(1.1em, 3vw, 1.4em);
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+
+        .message .hearts {
+            font-size: 2em;
+            margin: 20px 0;
+            animation: heartbeat 1.5s infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+            25% {
+                transform: scale(1.1);
+            }
+            50% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8) translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #667eea;
+            position: absolute;
+            animation: confettiFall 3s linear;
+            z-index: 1000;
+        }
+
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px 15px;
+            }
+
+            .grid {
+                gap: 2px;
+            }
+
+            .stats {
+                padding: 15px 10px;
+            }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(102, 126, 234, 0.2);
+            color: #666;
+            font-size: 0.85em;
+        }
+
+        .timer {
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="particles" id="particles"></div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Caça-Palavras Misterioso 💜</h1>
+            <p class="subtitle">Giovanna, descubra a mensagem escondida!</p>
+        </div>
+        
+        <div class="instructions">
+            <strong>Como jogar:</strong> Clique e arraste (ou toque e arraste no celular) para selecionar palavras escondidas.<br>
+            <small>💡 As palavras podem estar na horizontal, vertical ou diagonal - em qualquer direção!</small>
+        </div>
+
+        <div class="grid-container">
+            <div class="grid" id="grid"></div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-label">Palavras</div>
+                <div class="stat-value" id="progress">0/5</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Tempo</div>
+                <div class="stat-value timer" id="timer">00:00</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Tentativas</div>
+                <div class="stat-value" id="attempts">0</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="clearSelection()">🔄 Limpar Seleção</button>
+            <button class="secondary" onclick="resetGame()">🔃 Reiniciar Jogo</button>
+        </div>
+
+        <div class="hint">
+            💡 <strong>Dica:</strong> Procure por palavras que formam uma mensagem carinhosa... Pense em amor, amizade e nomes especiais! ✨
+        </div>
+
+        <div class="message" id="message">
+            <h2>🎉 VOCÊ CONSEGUIU! 🎉</h2>
+            <div class="hearts">💛 💜 💙 💚 ❤️</div>
+            <p><strong>AMAMOS VOCÊ GIOVANNA NOSSA AMIGA</strong></p>
+            <p style="font-size: 1em; margin-top: 20px;">Com todo carinho do mundo! ✨</p>
+            <p style="font-size: 0.9em; margin-top: 15px;">Tempo: <span id="finalTime"></span></p>
+        </div>
+
+        <div class="footer">
+            Feito com 💜 especialmente para você, Giovanna
+        </div>
+    </div>
+
+    <script>
+        const gridSize = 15;
+        const grid = [
+            ['M', 'P', 'L', 'A', 'T', 'N', 'O', 'S', 'S', 'A', 'R', 'B', 'K', 'Z', 'W'],
+            ['A', 'Q', 'U', 'F', 'R', 'G', 'I', 'O', 'V', 'A', 'N', 'N', 'A', 'E', 'X'],
+            ['G', 'W', 'E', 'X', 'Y', 'H', 'S', 'T', 'U', 'V', 'W', 'Q', 'P', 'M', 'Y'],
+            ['I', 'S', 'R', 'Z', 'A', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'Z'],
+            ['M', 'O', 'E', 'B', 'M', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'A'],
+            ['A', 'M', 'A', 'M', 'O', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B'],
+            ['C', 'A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'],
+            ['D', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'],
+            ['E', 'C', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'V'],
+            ['F', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'O'],
+            ['G', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'C'],
+            ['H', 'V', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'E'],
+            ['I', 'O', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
+            ['J', 'C', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U'],
+            ['K', 'E', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V']
+        ];
+
+        const words = {
+            'AMAMOS': [[5,0], [5,1], [5,2], [5,3], [5,4], [5,5]],
+            'VOCE': [[8,14], [9,14], [10,14], [11,14]],
+            'GIOVANNA': [[1,6], [1,7], [1,8], [1,9], [1,10], [1,11], [1,12], [1,13]],
+            'NOSSA': [[0,5], [0,6], [0,7], [0,8], [0,9]],
+            'AMIGA': [[0,0], [1,0], [2,0], [3,0], [4,0]]
+        };
+
+        let foundWords = new Set();
+        let selectedCells = [];
+        let isSelecting = false;
+        let attempts = 0;
+        let startTime = Date.now();
+        let timerInterval;
+        let gameCompleted = false;
+
+        const gridElement = document.getElementById('grid');
+        const cells = {};
+
+        // Criar partículas de fundo
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 15 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        // Inicializar grid
+        for (let i = 0; i < gridSize; i++) {
+            for (let j = 0; j < gridSize; j++) {
+                const cell = document.createElement('div');
+                cell.className = 'cell';
+                cell.textContent = grid[i][j];
+                cell.dataset.row = i;
+                cell.dataset.col = j;
+                
+                cell.addEventListener('mousedown', () => startSelection(i, j));
+                cell.addEventListener('mouseenter', () => continueSelection(i, j));
+                cell.addEventListener('mouseup', () => endSelection());
+                
+                cell.addEventListener('touchstart', (e) => {
+                    e.preventDefault();
+                    startSelection(i, j);
+                });
+                cell.addEventListener('touchmove', (e) => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    const element = document.elementFromPoint(touch.clientX, touch.clientY);
+                    if (element && element.dataset.row !== undefined) {
+                        continueSelection(parseInt(element.dataset.row), parseInt(element.dataset.col));
+                    }
+                });
+                cell.addEventListener('touchend', (e) => {
+                    e.preventDefault();
+                    endSelection();
+                });
+                
+                gridElement.appendChild(cell);
+                cells[`${i},${j}`] = cell;
+            }
+        }
+
+        document.addEventListener('mouseup', () => endSelection());
+        document.addEventListener('touchend', () => endSelection());
+
+        function startSelection(row, col) {
+            isSelecting = true;
+            selectedCells = [{row, col}];
+            updateSelection();
+        }
+
+        function continueSelection(row, col) {
+            if (!isSelecting) return;
+            
+            const lastCell = selectedCells[selectedCells.length - 1];
+            if (lastCell.row === row && lastCell.col === col) return;
+            
+            selectedCells.push({row, col});
+            updateSelection();
+        }
+
+        function endSelection() {
+            if (!isSelecting) return;
+            isSelecting = false;
+            checkForWord();
+        }
+
+        function updateSelection() {
+            document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
+            selectedCells.forEach(({row, col}) => {
+                const cell = cells[`${row},${col}`];
+                if (cell && !cell.classList.contains('found')) {
+                    cell.classList.add('selected');
+                }
+            });
+        }
+
+        function clearSelection() {
+            selectedCells = [];
+            isSelecting = false;
+            document.querySelectorAll('.cell.selected').forEach(c => c.classList.remove('selected'));
+        }
+
+        function checkForWord() {
+            attempts++;
+            document.getElementById('attempts').textContent = attempts;
+
+            for (const [word, positions] of Object.entries(words)) {
+                if (foundWords.has(word)) continue;
+
+                const selectedKeys = selectedCells.map(c => `${c.row},${c.col}`);
+                const wordKeys = positions.map(p => `${p[0]},${p[1]}`);
+                const wordKeysReverse = [...wordKeys].reverse();
+
+                const matchesForward = wordKeys.every((key, i) => selectedKeys[i] === key) && 
+                                      wordKeys.length === selectedKeys.length;
+                const matchesBackward = wordKeysReverse.every((key, i) => selectedKeys[i] === key) && 
+                                       wordKeysReverse.length === selectedKeys.length;
+
+                if (matchesForward || matchesBackward) {
+                    foundWords.add(word);
+                    positions.forEach(([r, c]) => {
+                        cells[`${r},${c}`].classList.add('found');
+                        cells[`${r},${c}`].classList.remove('selected');
+                    });
+                    
+                    document.getElementById('progress').textContent = 
+                        `${foundWords.size}/5`;
+                    
+                    createConfetti();
+                    
+                    if (foundWords.size === Object.keys(words).length) {
+                        completeGame();
+                    }
+                    
+                    selectedCells = [];
+                    return;
+                }
+            }
+            
+            clearSelection();
+        }
+
+        function createConfetti() {
+            const colors = ['#667eea', '#764ba2', '#ffd700', '#ff69b4', '#00ff00'];
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }
+        }
+
+        function completeGame() {
+            if (gameCompleted) return;
+            gameCompleted = true;
+            
+            clearInterval(timerInterval);
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('finalTime').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            
+            setTimeout(() => {
+                document.getElementById('message').classList.add('show');
+                createConfetti();
+                setTimeout(createConfetti, 200);
+                setTimeout(createConfetti, 400);
+            }, 500);
+        }
+
+        function updateTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('timer').textContent = 
+                `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+        }
+
+        function resetGame() {
+            foundWords = new Set();
+            selectedCells = [];
+            isSelecting = false;
+            attempts = 0;
+            startTime = Date.now();
+            gameCompleted = false;
+            
+            document.querySelectorAll('.cell').forEach(cell => {
+                cell.classList.remove('found', 'selected');
+            });
+            
+            document.getElementById('progress').textContent = '0/5';
+            document.getElementById('attempts').textContent = '0';
+            document.getElementById('message').classList.remove('show');
+            
+            clearInterval(timerInterval);
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Inicializar
+        createParticles();
+        timerInterval = setInterval(updateTimer, 1000);
+    </script>
+</body>
+</html>
