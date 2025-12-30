@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Caça-palavras especial para Giovanna">
-    <title>Mensagem Especial para Giovanna 💜</title>
+    <title>Feliz Ano Novo Giovanna 💜</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
@@ -144,7 +144,7 @@
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(15, 1fr);
+            grid-template-columns: repeat(16, 1fr);
             gap: 3px;
             margin: 0 auto;
             max-width: 650px;
@@ -425,8 +425,8 @@
 
     <div class="container">
         <div class="header">
-            <h1>🔍 Caça-Palavras Misterioso 💜</h1>
-            <p class="subtitle">Giovanna, descubra a mensagem escondida!</p>
+            <h1>✨ Mensagem Especial de Ano Novo para Giovanna 💜</h1>
+            <p class="subtitle">Descubra as 13 palavras escondidas cheias de amor e carinho!</p>
         </div>
         
         <div class="instructions">
@@ -441,7 +441,7 @@
         <div class="stats">
             <div class="stat-item">
                 <div class="stat-label">Palavras</div>
-                <div class="stat-value" id="progress">0/5</div>
+                <div class="stat-value" id="progress">0/10</div>
             </div>
             <div class="stat-item">
                 <div class="stat-label">Tempo</div>
@@ -459,48 +459,58 @@
         </div>
 
         <div class="hint">
-            💡 <strong>Dica:</strong> Procure por palavras que formam uma mensagem carinhosa... Pense em amor, amizade e nomes especiais! ✨
+            💡 <strong>Dica:</strong> Procure por 10 palavras que formam mensagens especiais de amor, amizade e Ano Novo! Incluem nomes, sentimentos e desejos dos seus amigos Lucas e Carol! ✨
         </div>
 
         <div class="message" id="message">
-            <h2>🎉 VOCÊ CONSEGUIU! 🎉</h2>
+            <h2>🎉 PARABÉNS GIOVANNA! 🎉</h2>
             <div class="hearts">💛 💜 💙 💚 ❤️</div>
-            <p><strong>AMAMOS VOCÊ GIOVANNA NOSSA AMIGA</strong></p>
-            <p style="font-size: 1em; margin-top: 20px;">Com todo carinho do mundo! ✨</p>
-            <p style="font-size: 0.9em; margin-top: 15px;">Tempo: <span id="finalTime"></span></p>
+            <p><strong>AMAMOS VOCÊ, GIOVANNA, NOSSA QUERIDA AMIGA ESPECIAL!</strong></p>
+            <p style="font-size: 1.2em; margin-top: 25px;">✨ FELIZ ANO NOVO 2026! ✨</p>
+            <p style="font-size: 1em; margin-top: 20px;">Que este novo ano traga muita <strong>ALEGRIA</strong> e <strong>SUCESSO</strong> para você!</p>
+            <p style="font-size: 1em; margin-top: 15px;">Você é incrível e merece todas as coisas maravilhosas que a vida pode oferecer! 🌟</p>
+            <p style="font-size: 1.1em; margin-top: 20px; font-weight: 600;">Com todo amor e carinho,<br>Lucas e Carol 💕</p>
+            <p style="font-size: 0.9em; margin-top: 20px; opacity: 0.9;">Tempo: <span id="finalTime"></span></p>
         </div>
 
         <div class="footer">
-            Feito com 💜 especialmente para você, Giovanna
+            Feito com 💜 especialmente para você, Giovanna<br>
+            <small>Por Lucas e Carol, seus amigos que te amam muito! ✨</small>
         </div>
     </div>
 
     <script>
-        const gridSize = 15;
+        const gridSize = 16;
         const grid = [
-            ['M', 'P', 'L', 'A', 'T', 'N', 'O', 'S', 'S', 'A', 'R', 'B', 'K', 'Z', 'W'],
-            ['A', 'Q', 'U', 'F', 'R', 'G', 'I', 'O', 'V', 'A', 'N', 'N', 'A', 'E', 'X'],
-            ['G', 'W', 'E', 'X', 'Y', 'H', 'S', 'T', 'U', 'V', 'W', 'Q', 'P', 'M', 'Y'],
-            ['I', 'S', 'R', 'Z', 'A', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'Z'],
-            ['M', 'O', 'E', 'B', 'M', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'A'],
-            ['A', 'M', 'A', 'M', 'O', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B'],
-            ['C', 'A', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P'],
-            ['D', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O'],
-            ['E', 'C', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'V'],
-            ['F', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'O'],
-            ['G', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'C'],
-            ['H', 'V', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'E'],
-            ['I', 'O', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'],
-            ['J', 'C', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U'],
-            ['K', 'E', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V']
+            ["S","L","G","I","O","V","A","N","N","A","W","X","F","K","U","E"],
+            ["O","F","N","Q","Z","P","P","C","Q","J","T","K","S","S","R","S"],
+            ["A","H","Z","K","R","S","M","X","J","J","V","I","F","C","A","P"],
+            ["M","E","R","W","B","F","X","A","T","F","O","C","L","U","R","E"],
+            ["A","R","Q","F","P","W","T","K","Y","H","C","X","E","Y","V","C"],
+            ["M","Z","B","F","H","A","T","U","Z","U","E","C","K","W","B","I"],
+            ["F","E","L","I","Z","C","L","P","U","V","N","R","N","O","C","A"],
+            ["O","I","L","L","T","T","W","J","D","X","L","O","Y","A","Z","L"],
+            ["Y","H","Z","A","I","I","P","W","A","N","O","N","O","V","O","S"],
+            ["L","A","X","O","D","B","O","C","K","G","B","H","K","V","B","U"],
+            ["Q","U","E","R","I","D","A","U","C","O","G","I","G","L","E","C"],
+            ["E","X","K","X","M","Z","R","L","C","A","I","O","A","S","V","E"],
+            ["G","T","L","U","C","A","S","V","G","V","Z","P","I","W","T","S"],
+            ["Z","A","P","K","F","Y","G","H","K","E","B","B","K","R","A","S"],
+            ["M","F","C","A","R","O","L","F","Q","F","R","Y","N","V","P","O"],
+            ["G","N","W","X","L","R","U","I","O","D","P","U","H","K","B","N"]
         ];
 
         const words = {
-            'AMAMOS': [[5,0], [5,1], [5,2], [5,3], [5,4], [5,5]],
-            'VOCE': [[8,14], [9,14], [10,14], [11,14]],
-            'GIOVANNA': [[1,6], [1,7], [1,8], [1,9], [1,10], [1,11], [1,12], [1,13]],
-            'NOSSA': [[0,5], [0,6], [0,7], [0,8], [0,9]],
-            'AMIGA': [[0,0], [1,0], [2,0], [3,0], [4,0]]
+            'GIOVANNA': [[0,2],[0,3],[0,4],[0,5],[0,6],[0,7],[0,8],[0,9]],
+            'AMAMOS': [[2,0],[3,0],[4,0],[5,0],[6,0],[7,0]],
+            'VOCE': [[2,10],[3,10],[4,10],[5,10]],
+            'FELIZ': [[6,0],[6,1],[6,2],[6,3],[6,4]],
+            'ANONOVO': [[8,8],[8,9],[8,10],[8,11],[8,12],[8,13],[8,14]],
+            'QUERIDA': [[10,0],[10,1],[10,2],[10,3],[10,4],[10,5],[10,6]],
+            'LUCAS': [[12,2],[12,3],[12,4],[12,5],[12,6]],
+            'CAROL': [[14,2],[14,3],[14,4],[14,5],[14,6]],
+            'ESPECIAL': [[0,15],[1,15],[2,15],[3,15],[4,15],[5,15],[6,15],[7,15]],
+            'SUCESSO': [[8,15],[9,15],[10,15],[11,15],[12,15],[13,15],[14,15]]
         };
 
         let foundWords = new Set();
@@ -626,8 +636,8 @@
                         cells[`${r},${c}`].classList.remove('selected');
                     });
                     
-                    document.getElementById('progress').textContent = 
-                        `${foundWords.size}/5`;
+                    document.getElementById('progress').textContent =
+                        `${foundWords.size}/10`;
                     
                     createConfetti();
                     
@@ -695,7 +705,7 @@
                 cell.classList.remove('found', 'selected');
             });
             
-            document.getElementById('progress').textContent = '0/5';
+            document.getElementById('progress').textContent = '0/10';
             document.getElementById('attempts').textContent = '0';
             document.getElementById('message').classList.remove('show');
             
